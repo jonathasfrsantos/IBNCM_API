@@ -9,18 +9,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jonathas.IBNCM_API.entities.Finalidade;
-import jonathas.IBNCM_API.services.FinalidadeService;
+import jonathas.IBNCM_API.entities.Lancamento;
+import jonathas.IBNCM_API.services.LancamentoService;
 
 @RestController
-@RequestMapping(value = "/finalidades")
+@RequestMapping(value = "/lançamentos")
 public class LancamentoResource {
 	
 	@Autowired
-	private FinalidadeService service;
+	private LancamentoService service;
 	
 	@GetMapping
-	public ResponseEntity<List<Finalidade>> findAll(){
-		List<Finalidade> list = service.findAll();
+	public ResponseEntity<List<Lancamento>> findAll(){
+		List<Lancamento> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 
