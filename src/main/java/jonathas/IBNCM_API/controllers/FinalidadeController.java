@@ -1,4 +1,4 @@
-package jonathas.IBNCM_API.resources;
+package jonathas.IBNCM_API.controllers;
 
 import java.net.URI;
 import java.util.List;
@@ -22,7 +22,7 @@ import jonathas.IBNCM_API.services.LancamentoService;
 
 @RestController
 @RequestMapping(value = "/finalidades")
-public class FinalidadeResource {
+public class FinalidadeController {
 	
 	@Autowired
 	private FinalidadeService service;

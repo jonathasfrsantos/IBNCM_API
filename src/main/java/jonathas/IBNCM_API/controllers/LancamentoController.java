@@ -1,4 +1,4 @@
-package jonathas.IBNCM_API.resources;
+package jonathas.IBNCM_API.controllers;
 
 import java.net.URI;
 import java.util.List;
@@ -20,7 +20,7 @@ import jonathas.IBNCM_API.services.LancamentoService;
 
 @RestController
 @RequestMapping(value = "/lançamentos")
-public class LancamentoResource {
+public class LancamentoController {
 	
 	@Autowired
 	private LancamentoService service;

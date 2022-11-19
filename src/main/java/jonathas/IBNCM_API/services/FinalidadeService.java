@@ -9,6 +9,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import jonathas.IBNCM_API.entities.Finalidade;
 import jonathas.IBNCM_API.repositories.FinalidadeRepository;
 import jonathas.IBNCM_API.services.exceptions.DataBaseException;
@@ -30,6 +31,7 @@ public class FinalidadeService {
 		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
+	@Transactional
 	public Finalidade insert(Finalidade obj) {
 		return repository.save(obj);
 	}
