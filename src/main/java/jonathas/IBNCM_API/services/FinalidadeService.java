@@ -1,16 +1,19 @@
 package jonathas.IBNCM_API.services;
 
-import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jonathas.IBNCM_API.entities.Finalidade;
+import jonathas.IBNCM_API.entities.DTO.FinalidadeDTO;
 import jonathas.IBNCM_API.repositories.FinalidadeRepository;
 import jonathas.IBNCM_API.services.exceptions.DataBaseException;
 import jonathas.IBNCM_API.services.exceptions.ResourceNotFoundException;
@@ -21,15 +24,23 @@ public class FinalidadeService {
 	@Autowired
 	private FinalidadeRepository repository;
 	
-	public List<Finalidade> findAll(){
-		return repository.findAll();
+
+	public Page<Finalidade> findAll(Pageable pageable){
+		return repository.findAll(pageable);
+	}
+	
+	public FinalidadeDTO findById(Long id) {                
+		try {
+			Finalidade entity = repository.findById(id).get();
+			FinalidadeDTO dto = new FinalidadeDTO(entity);
+			return dto;
+			
+		}catch (NoSuchElementException e) {
+			throw new ResourceNotFoundException(id);
+		}
 		
 	}
 	
-	public Finalidade findById(Long id) {
-		Optional<Finalidade> obj = repository.findById(id);
-		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
-	}
 	
 	@Transactional
 	public Finalidade insert(Finalidade obj) {
@@ -67,7 +78,24 @@ public class FinalidadeService {
 		
 	}
 	
+	public boolean existsByDescricao(String descricao) {
+		return repository.existsByDescricao(descricao);
+	}
 	
+
+	
+	/*
+	 * public List<Finalidade> findAll(){ return repository.findAll();
+	 * 
+	 * }
+	 */
+	
+	/*
+	 * public Finalidade findById(Long id) { Optional<Finalidade> obj =
+	 * repository.findById(id); return obj.orElseThrow(() -> new
+	 * ResourceNotFoundException(id)); }
+	 */
+	 
 	
 
 	
