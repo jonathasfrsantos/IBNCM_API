@@ -9,5 +9,9 @@ public interface FinalidadeRepository extends JpaRepository<Finalidade, Long> {
 	boolean existsByDescricao(String descricao);
 	
 	
+	
+	
+	
+	
 
 }

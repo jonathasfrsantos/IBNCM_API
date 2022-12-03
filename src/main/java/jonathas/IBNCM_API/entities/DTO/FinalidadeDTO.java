@@ -21,6 +21,7 @@ public class FinalidadeDTO {
 		descricao = finalidade.getDescricao();
 	}
 	
+
 	
 
 }

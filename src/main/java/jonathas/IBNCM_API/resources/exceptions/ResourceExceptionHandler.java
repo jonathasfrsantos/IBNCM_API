@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jonathas.IBNCM_API.services.exceptions.DataBaseException;
+import jonathas.IBNCM_API.services.exceptions.ExistThisValueAlready;
 import jonathas.IBNCM_API.services.exceptions.ResourceNotFoundException;
 
 @ControllerAdvice
@@ -32,6 +33,14 @@ public class ResourceExceptionHandler {
 				request.getRequestURI());
 		return ResponseEntity.status(status).body(err);
 
+	}
+	
+	@ExceptionHandler(ExistThisValueAlready.class)
+	public ResponseEntity<StandardError> existValueAlready(ExistThisValueAlready e, HttpServletRequest request){
+		String error = "Valor informado já existe";
+		HttpStatus status = HttpStatus.CONFLICT;
+		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+		return ResponseEntity.status(status).body(err);
 	}
 	
 	
