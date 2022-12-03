@@ -1,14 +1,14 @@
 package jonathas.IBNCM_API.services;
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import jonathas.IBNCM_API.entities.Lancamento;
 import jonathas.IBNCM_API.repositories.LancamentoRepository;
 import jonathas.IBNCM_API.services.exceptions.DataBaseException;
@@ -20,18 +20,18 @@ public class LancamentoService {
 	@Autowired
 	private LancamentoRepository repository;
 	
-	public List<Lancamento> findAll(){
-		return repository.findAll();
-		
+	public Page<Lancamento> findAll(Pageable pageable){
+		return repository.findAll(pageable);
 	}
 	
 	public Lancamento findById(Long id) {
-		Optional<Lancamento> obj = repository.findById(id);
-		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
+		return repository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
-	public Lancamento insert(Lancamento obj) {
-		return repository.save(obj);
+	@Transactional
+	public Lancamento insert(Lancamento lancamento) {
+		return repository.save(lancamento);
 	}
 	
 	
