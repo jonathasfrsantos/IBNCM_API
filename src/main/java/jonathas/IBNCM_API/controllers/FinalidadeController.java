@@ -1,7 +1,5 @@
 package jonathas.IBNCM_API.controllers;
 
-import java.util.function.Function;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,20 +29,15 @@ public class FinalidadeController {
 
 	@Autowired
 	private FinalidadeService service;
-	
-	@Autowired
-	private FinalidadeAssembler finalidadeAssembler;
-	
+
 	
 	@GetMapping
-	public ResponseEntity<Page<FinalidadeDTO>> findAll(@PageableDefault(page = 0, size = 10, sort = "id", direction =Direction.ASC)Pageable pageable){
-			return ResponseEntity.ok().body(service.findAll(pageable));
-
+	public ResponseEntity<Page<FinalidadeDTO>> findAll(@PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.ASC) Pageable pageable) {
+		return ResponseEntity.ok().body(service.findAll(pageable));
 	}
 
-
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Finalidade> findById(@PathVariable Long id) {
+	public ResponseEntity<FinalidadeDTO> findById(@PathVariable Long id) {
 		return ResponseEntity.ok().body(service.findById(id));
 
 	}
