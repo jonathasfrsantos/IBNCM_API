@@ -1,5 +1,6 @@
 package jonathas.IBNCM_API.services;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import jonathas.IBNCM_API.entities.Finalidade;
+import jonathas.IBNCM_API.entities.DTO.FinalidadeDTO;
 import jonathas.IBNCM_API.repositories.FinalidadeRepository;
 import jonathas.IBNCM_API.services.exceptions.DataBaseException;
 import jonathas.IBNCM_API.services.exceptions.ExistThisValueAlready;
@@ -20,11 +22,17 @@ public class FinalidadeService {
 
 	@Autowired
 	private FinalidadeRepository repository;
-
-	public Page<Finalidade> findAll(Pageable pageable) {
-		return repository.findAll(pageable);
-	}
 	
+	@Autowired
+	public ModelMapper modelMapper;
+	
+	
+	public Page<FinalidadeDTO> findAll(Pageable pageable){
+		Page<Finalidade> result = repository.findAll(pageable);
+		Page<FinalidadeDTO> page = result.map(x -> new FinalidadeDTO(x));
+		return page;
+	}
+		
 	
 	public Finalidade findById(Long id) {
 		return repository.findById(id)
@@ -42,6 +50,7 @@ public class FinalidadeService {
 
 	}	
 	
+	@Transactional
 	public void delete(Long id) {
 		try {
 			repository.deleteById(id);

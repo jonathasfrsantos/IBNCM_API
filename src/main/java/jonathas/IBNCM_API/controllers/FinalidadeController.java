@@ -1,8 +1,12 @@
 package jonathas.IBNCM_API.controllers;
 
+import java.util.function.Function;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -16,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import jonathas.IBNCM_API.assembler.FinalidadeAssembler;
 import jonathas.IBNCM_API.entities.Finalidade;
+import jonathas.IBNCM_API.entities.DTO.FinalidadeDTO;
 import jonathas.IBNCM_API.services.FinalidadeService;
 
 @RestController
@@ -25,25 +31,30 @@ public class FinalidadeController {
 
 	@Autowired
 	private FinalidadeService service;
-
+	
+	@Autowired
+	private FinalidadeAssembler finalidadeAssembler;
+	
+	
 	@GetMapping
-	public ResponseEntity<Page<Finalidade>> findAll(Pageable pageable) {
-		return ResponseEntity.ok().body(service.findAll(pageable));
+	public ResponseEntity<Page<FinalidadeDTO>> findAll(@PageableDefault(page = 0, size = 10, sort = "id", direction =Direction.ASC)Pageable pageable){
+			return ResponseEntity.ok().body(service.findAll(pageable));
+
 	}
+
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Finalidade> findById(@PathVariable Long id) {
 		return ResponseEntity.ok().body(service.findById(id));
 
 	}
-	
+
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<Finalidade> insert(@RequestBody @Validated Finalidade finalidade) {
 		return ResponseEntity.ok().body(service.insert(finalidade));
-		
+
 	}
-	
 
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
@@ -59,9 +70,22 @@ public class FinalidadeController {
 	}
 
 	/*
+	 * @GetMapping public ResponseEntity<Page<Finalidade>> findAll(Pageable
+	 * pageable) { return ResponseEntity.ok().body(service.findAll(pageable)); }
+	 */
+
+	/*
 	 * @GetMapping public ResponseEntity<List<Finalidade>> findAll(){
 	 * List<Finalidade> list = service.findAll(null); return
 	 * ResponseEntity.ok().body(list); }
+	 */
+
+	/*
+	 * @GetMapping public ResponseEntity<List<FinalidadeDTO>> findAll(){ return
+	 * ResponseEntity.ok().body(finalidadeAssembler.toCollectionDTO(service.findAll(
+	 * )));
+	 * 
+	 * }
 	 */
 
 	/*
@@ -79,7 +103,7 @@ public class FinalidadeController {
 	 * 
 	 * }
 	 */
-	
+
 	/*
 	 * @PostMapping public ResponseEntity<Object> insert(@RequestBody @Validated
 	 * Finalidade finalidade) { service.insert(finalidade); URI uri =
