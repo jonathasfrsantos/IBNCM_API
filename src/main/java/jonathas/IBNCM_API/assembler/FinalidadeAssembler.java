@@ -16,10 +16,6 @@ public class FinalidadeAssembler {
 	private ModelMapper modelMapper;
 	
 	
-
-
-
-	
 	public List<FinalidadeDTO> toCollectionDTO(List<Finalidade> finalidades) {
 		return finalidades.stream()
 				.map(this::toDTO)

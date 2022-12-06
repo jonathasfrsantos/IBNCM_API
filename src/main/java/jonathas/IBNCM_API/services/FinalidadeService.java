@@ -67,7 +67,7 @@ public class FinalidadeService implements ConverterDTO {
 		if (existsByDescricao(finalidade.getDescricao())) {
 			throw new ExistThisValueAlready(finalidade.getDescricao(), finalidade);
 		}
-
+		DTOFactory.createDTO(finalidade);
 		return repository.save(finalidade);
 
 	}
@@ -89,6 +89,7 @@ public class FinalidadeService implements ConverterDTO {
 			Finalidade entity = repository.getReferenceById(id);
 			updateData(entity, obj);
 			return repository.save(entity);
+			
 
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(id);
@@ -96,10 +97,9 @@ public class FinalidadeService implements ConverterDTO {
 
 	}
 
-	private void updateData(Finalidade entity, Finalidade obj) {
-		entity.setContaContabil(obj.getContaContabil());
-		entity.setDescricao(obj.getDescricao());
-
+	private void updateData(Finalidade newObj, Finalidade oldObj) {
+		newObj.setDescricao(oldObj.getDescricao());
+		newObj.setContaContabil(oldObj.getContaContabil());
 	}
 
 	public boolean existsByDescricao(String descricao) {
