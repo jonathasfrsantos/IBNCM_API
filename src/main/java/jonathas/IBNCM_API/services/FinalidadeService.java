@@ -30,9 +30,15 @@ public class FinalidadeService implements ConverterDTO {
 	@Autowired
 	public ModelMapper modelMapper;
 
-	/*
-	 * @Autowired private DTOFactory dtoFactory;
-	 */
+	@Transactional
+	public Finalidade insert(Finalidade finalidade) {
+		if (existsByDescricao(finalidade.getDescricao())) {
+			throw new ExistThisValueAlready(finalidade.getDescricao(), finalidade);
+		}
+
+		return repository.save(finalidade);
+
+	}
 
 	public FinalidadeDTO findById(Long id) {
 		try {
@@ -51,24 +57,15 @@ public class FinalidadeService implements ConverterDTO {
 		return page;
 	}
 
-	/*
-	 * public FinalidadeDTO findById(Long id) { try { Finalidade result =
-	 * repository.findById(id).get(); FinalidadeDTO dto = entityToDTo(result);
-	 * return dto;
-	 * 
-	 * } catch (NoSuchElementException e) { throw new ResourceNotFoundException(id);
-	 * }
-	 * 
-	 * }
-	 */
+	public Finalidade update(Long id, Finalidade obj) {
+		try {
+			Finalidade entity = repository.getReferenceById(id);
+			updateData(entity, obj);
+			return repository.save(entity);
 
-	@Transactional
-	public Finalidade insert(Finalidade finalidade) {
-		if (existsByDescricao(finalidade.getDescricao())) {
-			throw new ExistThisValueAlready(finalidade.getDescricao(), finalidade);
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
 		}
-		DTOFactory.createDTO(finalidade);
-		return repository.save(finalidade);
 
 	}
 
@@ -82,19 +79,6 @@ public class FinalidadeService implements ConverterDTO {
 		} catch (DataIntegrityViolationException e) {
 			throw new DataBaseException(e.getMessage());
 		}
-	}
-
-	public Finalidade update(Long id, Finalidade obj) {
-		try {
-			Finalidade entity = repository.getReferenceById(id);
-			updateData(entity, obj);
-			return repository.save(entity);
-			
-
-		} catch (EntityNotFoundException e) {
-			throw new ResourceNotFoundException(id);
-		}
-
 	}
 
 	private void updateData(Finalidade newObj, Finalidade oldObj) {
@@ -140,6 +124,17 @@ public class FinalidadeService implements ConverterDTO {
 	/*
 	 * @Transactional public Finalidade insert(Finalidade obj) { return
 	 * repository.save(obj); }
+	 */
+
+	/*
+	 * public FinalidadeDTO findById(Long id) { try { Finalidade result =
+	 * repository.findById(id).get(); FinalidadeDTO dto = entityToDTo(result);
+	 * return dto;
+	 * 
+	 * } catch (NoSuchElementException e) { throw new ResourceNotFoundException(id);
+	 * }
+	 * 
+	 * }
 	 */
 
 }

@@ -1,4 +1,4 @@
-package jonathas.IBNCM_API.common;
+package jonathas.IBNCM_API.Common;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

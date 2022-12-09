@@ -30,9 +30,16 @@ public class FinalidadeController {
 	@Autowired
 	private FinalidadeService service;
 
-	
+	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
+	public ResponseEntity<Finalidade> insert(@RequestBody @Validated Finalidade finalidade) {
+		return ResponseEntity.ok().body(service.insert(finalidade));
+
+	}
+
 	@GetMapping
-	public ResponseEntity<Page<FinalidadeDTO>> findAll(@PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.ASC) Pageable pageable) {
+	public ResponseEntity<Page<FinalidadeDTO>> findAll(
+			@PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.ASC) Pageable pageable) {
 		return ResponseEntity.ok().body(service.findAll(pageable));
 	}
 
@@ -42,10 +49,10 @@ public class FinalidadeController {
 
 	}
 
-	@PostMapping
-	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Finalidade> insert(@RequestBody @Validated Finalidade finalidade) {
-		return ResponseEntity.ok().body(service.insert(finalidade));
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<Finalidade> update(@PathVariable Long id, @RequestBody Finalidade obj) {
+		obj = service.update(id, obj);
+		return ResponseEntity.ok().body(obj);
 
 	}
 
@@ -53,13 +60,6 @@ public class FinalidadeController {
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
-	}
-
-	@PutMapping(value = "/{id}")
-	public ResponseEntity<Finalidade> update(@PathVariable Long id, @RequestBody Finalidade obj) {
-		obj = service.update(id, obj);
-		return ResponseEntity.ok().body(obj);
-
 	}
 
 	/*

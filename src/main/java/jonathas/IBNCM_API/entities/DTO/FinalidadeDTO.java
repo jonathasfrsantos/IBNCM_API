@@ -1,6 +1,5 @@
 package jonathas.IBNCM_API.entities.DTO;
 
-import jonathas.IBNCM_API.entities.Finalidade;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -3,6 +3,8 @@ package jonathas.IBNCM_API.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import jonathas.IBNCM_API.entities.Lancamento;
+import jonathas.IBNCM_API.entities.DTO.LancamentoDTO;
 import jonathas.IBNCM_API.services.LancamentoService;
 
 @RestController
@@ -26,32 +29,27 @@ public class LancamentoController {
 	@Autowired
 	private LancamentoService service;
 	
+	
+
+	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
+	public ResponseEntity<Lancamento> insert(@RequestBody @Validated Lancamento lancamento) {
+		return ResponseEntity.ok().body(service.insert(lancamento));
+
+	}
+	
+	
 	@GetMapping
-	public ResponseEntity<Page<Lancamento>> findAll(Pageable pageable){
+	public ResponseEntity<Page<LancamentoDTO>> findAll(@PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.ASC) Pageable pageable){
 		return ResponseEntity.ok().body(service.findAll(pageable));
 		
 	}
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Lancamento> findById(@PathVariable Long id){
+	public ResponseEntity<LancamentoDTO> findById(@PathVariable Long id){
 		return ResponseEntity.ok().body(service.findById(id));
 	}
 	
-	
-	@PostMapping
-	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Lancamento> insert(@RequestBody @Validated Lancamento lancamento) {
-		return ResponseEntity.ok().body(service.insert(lancamento));
-		
-	}
-	
-	
-
-	@DeleteMapping(value = "/{id}")
-	public ResponseEntity<Void> delete(@PathVariable Long id){
-		service.delete(id);
-		return ResponseEntity.noContent().build();
-	}
 	
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Lancamento> update(@PathVariable Long id, @RequestBody Lancamento obj){
@@ -60,6 +58,13 @@ public class LancamentoController {
 	
 	}
 	
+	
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<Void> delete(@PathVariable Long id){
+		service.delete(id);
+		return ResponseEntity.noContent().build();
+	}
+
 	
 	/*
 	 * @PostMapping public ResponseEntity<Lancamento> insert(@RequestBody Lancamento
