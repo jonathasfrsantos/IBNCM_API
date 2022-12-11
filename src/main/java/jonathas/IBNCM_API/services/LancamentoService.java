@@ -23,6 +23,8 @@ public class LancamentoService {
 
 	@Autowired
 	private LancamentoRepository repository;
+	
+
 
 	@Transactional
 	public Lancamento insert(Lancamento lancamento) {
@@ -44,6 +46,8 @@ public class LancamentoService {
 			throw new ResourceNotFoundException(id);
 		}
 	}
+	
+	
 
 	public Lancamento update(Long id, Lancamento obj) {
 		try {

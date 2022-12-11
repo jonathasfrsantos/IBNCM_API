@@ -1,6 +1,8 @@
 package jonathas.IBNCM_API.services;
 
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,8 +55,19 @@ public class FinalidadeService implements ConverterDTO {
 
 	public Page<FinalidadeDTO> findAll(Pageable pageable) {
 		Page<Finalidade> result = repository.findAll(pageable);
-		Page<FinalidadeDTO> page = result.map(x -> DTOFactory.createDTO(x));
+		Page<FinalidadeDTO> page = result.map((x) -> DTOFactory.createDTO(x));
 		return page;
+	}
+	
+	public List<FinalidadeDTO> findAllByDescription(String description){
+		List<Finalidade> result = repository.findByDescricaoContains(description);
+		List<FinalidadeDTO> listDTO = result
+				.stream()
+				.map((x) -> DTOFactory.createDTO(x))
+				.collect(Collectors.toList());
+		return listDTO;
+		
+		
 	}
 
 	public Finalidade update(Long id, Finalidade obj) {
