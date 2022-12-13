@@ -1,6 +1,8 @@
 package jonathas.IBNCM_API.services;
 
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -11,9 +13,11 @@ import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import jonathas.IBNCM_API.entities.Finalidade;
 import jonathas.IBNCM_API.entities.Lancamento;
 import jonathas.IBNCM_API.entities.DTO.LancamentoDTO;
 import jonathas.IBNCM_API.factory.DTOFactory;
+import jonathas.IBNCM_API.repositories.FinalidadeRepository;
 import jonathas.IBNCM_API.repositories.LancamentoRepository;
 import jonathas.IBNCM_API.services.exceptions.DataBaseException;
 import jonathas.IBNCM_API.services.exceptions.ResourceNotFoundException;
@@ -24,6 +28,9 @@ public class LancamentoService {
 	@Autowired
 	private LancamentoRepository repository;
 	
+	@Autowired
+	private FinalidadeService finalidadeService;
+	
 
 
 	@Transactional
@@ -33,7 +40,7 @@ public class LancamentoService {
 
 	public Page<LancamentoDTO> findAll(Pageable pageable) {
 		Page<Lancamento> result = repository.findAll(pageable);
-		Page<LancamentoDTO> page = result.map(x -> DTOFactory.createDTO(x));
+		Page<LancamentoDTO> page = result.map((x) -> DTOFactory.createDTO(x));
 		return page;
 	}
 
@@ -45,6 +52,25 @@ public class LancamentoService {
 		} catch (NoSuchElementException e) {
 			throw new ResourceNotFoundException(id);
 		}
+	}
+	
+	public List<LancamentoDTO> findAllByFinality(Finalidade finalidade){
+		List<Lancamento> result = repository.findByFinalidade(finalidade);
+		List<LancamentoDTO> dto = result.stream()
+				.map((x) -> DTOFactory.createDTO(x))
+				.collect(Collectors.toList());
+		
+		return dto;
+		
+	}
+	
+	public List<LancamentoDTO> findByDescricao(String descricao){
+		List<Lancamento> result = repository.findByFinalidadeDescricao(descricao);
+		List<LancamentoDTO> dto = result
+				.stream()
+				.map((x) -> DTOFactory.createDTO(x))
+				.collect(Collectors.toList());
+		return dto;
 	}
 	
 	

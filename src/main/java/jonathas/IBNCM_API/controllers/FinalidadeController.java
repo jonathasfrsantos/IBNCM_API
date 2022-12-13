@@ -53,8 +53,8 @@ public class FinalidadeController {
 	}
 	
 	@GetMapping("/filter")
-	public List<FinalidadeDTO> findAllByDescription(@RequestParam("descricao") String descricao){
-		return service.findAllByDescription(descricao);
+	public ResponseEntity<List<FinalidadeDTO>> findAllByDescription(@RequestParam("descricao") String descricao){
+		return ResponseEntity.ok().body(service.findAllByDescription(descricao));
 	}
 	
 

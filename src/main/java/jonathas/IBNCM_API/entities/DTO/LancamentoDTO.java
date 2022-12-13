@@ -13,7 +13,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Setter
 @Getter
-
 public class LancamentoDTO {
 	
 	private Long id;
@@ -23,6 +22,9 @@ public class LancamentoDTO {
 	private String historico;
 	private Finalidade finalidade;
 	private BancoCaixa bancoCaixa;
+	
+	
+
 	
 
 }

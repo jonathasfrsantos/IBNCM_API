@@ -41,6 +41,7 @@ public class Lancamento implements Serializable{
 	private Finalidade finalidade;
 	
 	private BancoCaixa bancoCaixa;
+
 	
 	
 	

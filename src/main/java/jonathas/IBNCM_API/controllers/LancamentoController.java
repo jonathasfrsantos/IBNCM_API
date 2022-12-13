@@ -1,5 +1,7 @@
 package jonathas.IBNCM_API.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import jonathas.IBNCM_API.entities.Finalidade;
 import jonathas.IBNCM_API.entities.Lancamento;
 import jonathas.IBNCM_API.entities.DTO.LancamentoDTO;
 import jonathas.IBNCM_API.services.LancamentoService;
@@ -41,7 +44,8 @@ public class LancamentoController {
 	
 	
 	@GetMapping
-	public ResponseEntity<Page<LancamentoDTO>> findAll(@PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.ASC) Pageable pageable){
+	public ResponseEntity<Page<LancamentoDTO>> findAll(
+			@PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.ASC) Pageable pageable){
 		return ResponseEntity.ok().body(service.findAll(pageable));
 		
 	}
@@ -49,6 +53,17 @@ public class LancamentoController {
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<LancamentoDTO> findById(@PathVariable Long id){
 		return ResponseEntity.ok().body(service.findById(id));
+	}
+	
+	/*
+	 * @GetMapping("/filter") public ResponseEntity<List<LancamentoDTO>>
+	 * findByFinality(@RequestParam("finalidade") Finalidade finalidade){ return
+	 * ResponseEntity.ok().body(service.findAllByFinality(finalidade)); }
+	 */
+	
+	@GetMapping("/filter")
+	public ResponseEntity<List<LancamentoDTO>> findByFinalityDescription(@RequestParam("finalidade") String descricao){
+		return ResponseEntity.ok().body(service.findByDescricao(descricao));
 	}
 	
 

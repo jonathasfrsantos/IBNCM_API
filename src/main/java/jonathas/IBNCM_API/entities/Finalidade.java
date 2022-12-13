@@ -2,7 +2,6 @@ package jonathas.IBNCM_API.entities;
 
 import java.io.Serializable;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,10 +27,11 @@ public class Finalidade implements Serializable {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@EqualsAndHashCode.Include
 	private Long id;
-	
 	private String descricao;
 	private String contaContabil;
+
+	}
 	
 	
 
-}
+
