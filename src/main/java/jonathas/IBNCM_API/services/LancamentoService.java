@@ -27,11 +27,9 @@ public class LancamentoService {
 
 	@Autowired
 	private LancamentoRepository repository;
-	
+
 	@Autowired
 	private FinalidadeService finalidadeService;
-	
-
 
 	@Transactional
 	public Lancamento insert(Lancamento lancamento) {
@@ -53,27 +51,20 @@ public class LancamentoService {
 			throw new ResourceNotFoundException(id);
 		}
 	}
-	
-	public List<LancamentoDTO> findAllByFinality(Finalidade finalidade){
+
+	public List<LancamentoDTO> findAllByFinality(Finalidade finalidade) {
 		List<Lancamento> result = repository.findByFinalidade(finalidade);
-		List<LancamentoDTO> dto = result.stream()
-				.map((x) -> DTOFactory.createDTO(x))
-				.collect(Collectors.toList());
-		
+		List<LancamentoDTO> dto = result.stream().map((x) -> DTOFactory.createDTO(x)).collect(Collectors.toList());
+
 		return dto;
-		
+
 	}
-	
-	public List<LancamentoDTO> findByDescricao(String descricao){
+
+	public List<LancamentoDTO> findByDescricao(String descricao) {
 		List<Lancamento> result = repository.findByFinalidadeDescricao(descricao);
-		List<LancamentoDTO> dto = result
-				.stream()
-				.map((x) -> DTOFactory.createDTO(x))
-				.collect(Collectors.toList());
+		List<LancamentoDTO> dto = result.stream().map((x) -> DTOFactory.createDTO(x)).collect(Collectors.toList());
 		return dto;
 	}
-	
-	
 
 	public Lancamento update(Long id, Lancamento obj) {
 		try {
@@ -105,5 +96,8 @@ public class LancamentoService {
 		entity.setBancoCaixa(obj.getBancoCaixa());
 
 	}
+	
+
+
 
 }

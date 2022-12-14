@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jonathas.IBNCM_API.entities.Finalidade;
 import jonathas.IBNCM_API.entities.Lancamento;
 import jonathas.IBNCM_API.entities.DTO.LancamentoDTO;
+import jonathas.IBNCM_API.repositories.LancamentoRepository;
 import jonathas.IBNCM_API.services.LancamentoService;
 
 @RestController
@@ -32,6 +33,9 @@ public class LancamentoController {
 	
 	@Autowired
 	private LancamentoService service;
+	
+	@Autowired
+	private LancamentoRepository repository;
 	
 	
 
@@ -64,6 +68,11 @@ public class LancamentoController {
 	@GetMapping("/filter")
 	public ResponseEntity<List<LancamentoDTO>> findByFinalityDescription(@RequestParam("finalidade") String descricao){
 		return ResponseEntity.ok().body(service.findByDescricao(descricao));
+	}
+	
+	@GetMapping("/getTotalDizimos")
+	public Double getTotalDizimos() {
+		return repository.totalDizimos();
 	}
 	
 
