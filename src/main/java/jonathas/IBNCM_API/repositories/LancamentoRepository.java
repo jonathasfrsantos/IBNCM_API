@@ -10,14 +10,23 @@ import jonathas.IBNCM_API.entities.Lancamento;
 
 public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
 	
-	List<Lancamento> findByFinalidade(Finalidade finalidade);
+	@Query(value = "SELECT * FROM tb_lancamento WHERE ENTRADA IS NOT NULL", nativeQuery = true)
+	List<Lancamento> findAllEntrada();
+	
+	@Query(value = "SELECT * FROM tb_lancamento WHERE SAIDA IS NOT NULL", nativeQuery = true)
+	List<Lancamento> findAllSaida();
+
 	
 	List<Lancamento> findByFinalidadeDescricao(String descricao);
 	
 	@Query(value = "SELECT SUM(ENTRADA) AS totalDizimos FROM tb_lancamento WHERE FINALIDADE_ID = 1", nativeQuery = true)
 	double totalDizimos();
 	
-
+	@Query(value = "SELECT SUM(ENTRADA) AS totalEntradas FROM tb_lancamento", nativeQuery = true)
+	double totalEntradas();
+	
+	@Query(value = "SELECT SUM(SAIDA) AS totalSaidas FROM tb_lancamento", nativeQuery = true)
+	double totalSaidas();
 
 
 }

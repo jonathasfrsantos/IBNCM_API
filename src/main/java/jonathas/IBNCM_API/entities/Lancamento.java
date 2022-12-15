@@ -3,6 +3,8 @@ package jonathas.IBNCM_API.entities;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -36,6 +38,7 @@ public class Lancamento implements Serializable{
 	private Double saida;
 	private String historico;
 	
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "finalidade_id")
 	private Finalidade finalidade;

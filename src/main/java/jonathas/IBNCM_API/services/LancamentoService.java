@@ -52,15 +52,9 @@ public class LancamentoService {
 		}
 	}
 
-	public List<LancamentoDTO> findAllByFinality(Finalidade finalidade) {
-		List<Lancamento> result = repository.findByFinalidade(finalidade);
-		List<LancamentoDTO> dto = result.stream().map((x) -> DTOFactory.createDTO(x)).collect(Collectors.toList());
 
-		return dto;
 
-	}
-
-	public List<LancamentoDTO> findByDescricao(String descricao) {
+	public List<LancamentoDTO> findByFinalityDescription(String descricao) {
 		List<Lancamento> result = repository.findByFinalidadeDescricao(descricao);
 		List<LancamentoDTO> dto = result.stream().map((x) -> DTOFactory.createDTO(x)).collect(Collectors.toList());
 		return dto;

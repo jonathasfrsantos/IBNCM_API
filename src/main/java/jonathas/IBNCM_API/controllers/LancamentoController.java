@@ -67,12 +67,32 @@ public class LancamentoController {
 	
 	@GetMapping("/filter")
 	public ResponseEntity<List<LancamentoDTO>> findByFinalityDescription(@RequestParam("finalidade") String descricao){
-		return ResponseEntity.ok().body(service.findByDescricao(descricao));
+		return ResponseEntity.ok().body(service.findByFinalityDescription(descricao));
+	}
+	
+	@GetMapping("/getEntradas")
+	public List<Lancamento> getEntradas() {
+		return repository.findAllEntrada();
+	}
+	
+	@GetMapping("/getSaidas")
+	public List<Lancamento> getSaidas() {
+		return repository.findAllSaida();
 	}
 	
 	@GetMapping("/getTotalDizimos")
 	public Double getTotalDizimos() {
 		return repository.totalDizimos();
+	}
+	
+	@GetMapping("/getTotalEntradas")
+	public Double getTotalEntradas() {
+		return repository.totalEntradas();
+	}
+	
+	@GetMapping("/getTotalSaidas")
+	public Double getTotalSaidas() {
+		return repository.totalSaidas();
 	}
 	
 
