@@ -41,6 +41,13 @@ public class LancamentoService {
 		Page<LancamentoDTO> page = result.map((x) -> DTOFactory.createDTO(x));
 		return page;
 	}
+	
+	public Page<LancamentoDTO> findAll2(Pageable pageable){
+		Page<Lancamento> result = repository.findAllOrderByData(pageable);
+		Page<LancamentoDTO> page = result.map((x) -> DTOFactory.createDTO(x));
+		return page;
+		
+	}
 
 	public LancamentoDTO findById(Long id) {
 		try {

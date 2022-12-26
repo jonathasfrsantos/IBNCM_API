@@ -21,7 +21,7 @@ public class DTOFactory {
 		dto.setEntrada(lancamento.getEntrada());
 		dto.setSaida(lancamento.getSaida());
 		dto.setHistorico(lancamento.getHistorico());
-		dto.setFinalidade(lancamento.getFinalidade());
+		dto.setFinalidade(lancamento.getFinalidade().getDescricao());
 		dto.setBancoCaixa(lancamento.getBancoCaixa());
 		return dto;
 

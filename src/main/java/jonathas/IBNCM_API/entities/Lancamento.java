@@ -25,7 +25,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-@EqualsAndHashCode
+
 public class Lancamento implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
@@ -42,8 +42,11 @@ public class Lancamento implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "finalidade_id")
 	private Finalidade finalidade;
-	
 	private BancoCaixa bancoCaixa;
+	
+
+	
+	
 
 	
 	

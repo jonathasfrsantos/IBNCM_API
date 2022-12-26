@@ -54,6 +54,13 @@ public class LancamentoController {
 		
 	}
 	
+	@GetMapping("/allOrderByData")
+	public ResponseEntity<Page<LancamentoDTO>> findAll2(
+			@PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.ASC) Pageable pageable){
+		return ResponseEntity.ok().body(service.findAll2(pageable));
+
+	}
+	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<LancamentoDTO> findById(@PathVariable Long id){
 		return ResponseEntity.ok().body(service.findById(id));
@@ -93,6 +100,11 @@ public class LancamentoController {
 	@GetMapping("/getTotalSaidas")
 	public Double getTotalSaidas() {
 		return repository.totalSaidas();
+	}
+	
+	@GetMapping("/getAllDizimos")
+	public List<Lancamento> getAllDizimos(){
+		return repository.findAllDizimos();
 	}
 	
 
