@@ -1,5 +1,6 @@
 package jonathas.IBNCM_API.services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -16,6 +17,7 @@ import jakarta.transaction.Transactional;
 import jonathas.IBNCM_API.entities.Finalidade;
 import jonathas.IBNCM_API.entities.Lancamento;
 import jonathas.IBNCM_API.entities.DTO.LancamentoDTO;
+import jonathas.IBNCM_API.entities.enums.BancoCaixa;
 import jonathas.IBNCM_API.factory.DTOFactory;
 import jonathas.IBNCM_API.repositories.FinalidadeRepository;
 import jonathas.IBNCM_API.repositories.LancamentoRepository;
@@ -28,24 +30,47 @@ public class LancamentoService {
 	@Autowired
 	private LancamentoRepository repository;
 
+	
 	@Autowired
-	private FinalidadeService finalidadeService;
+	private FinalidadeRepository finalidadeRepository;
+	
+	
+	  @Transactional 
+	  public Lancamento insert(Lancamento lancamento) {
+		 return repository.save(lancamento);
+	  }
+	 
 
-	@Transactional
-	public Lancamento insert(Lancamento lancamento) {
-		return repository.save(lancamento);
+	/*
+	 * public Page<LancamentoDTO> findAll(Pageable pageable) { Page<Lancamento>
+	 * result = repository.findAll(pageable); Page<LancamentoDTO> page =
+	 * result.map((x) -> DTOFactory.createDTO(x)); return page; }
+	 */
+	  
+	public List<LancamentoDTO> orderByDate(){
+		List<Lancamento> result = repository.findAll();
+		List<LancamentoDTO> dto = result.stream().map((x) -> DTOFactory.createDTO(x)).collect(Collectors.toList());
+		return dto;
 	}
-
-	public Page<LancamentoDTO> findAll(Pageable pageable) {
-		Page<Lancamento> result = repository.findAll(pageable);
-		Page<LancamentoDTO> page = result.map((x) -> DTOFactory.createDTO(x));
-		return page;
+	
+	public List<LancamentoDTO> findAll(){
+		List<Lancamento> result = repository.findAll();
+		List<LancamentoDTO> dto = result.stream().map((x) -> DTOFactory.createDTO(x)).collect(Collectors.toList());
+		return dto;
 	}
 	
 	public Page<LancamentoDTO> findAll2(Pageable pageable){
 		Page<Lancamento> result = repository.findAllOrderByData(pageable);
 		Page<LancamentoDTO> page = result.map((x) -> DTOFactory.createDTO(x));
 		return page;
+		
+	}
+	
+
+	public List<LancamentoDTO> findAllJr(){
+		List<Lancamento> result = repository.findByOrderByData();
+		List<LancamentoDTO> dto = result.stream().map((x) -> DTOFactory.createDTO(x)).collect(Collectors.toList());
+		return dto;
 		
 	}
 

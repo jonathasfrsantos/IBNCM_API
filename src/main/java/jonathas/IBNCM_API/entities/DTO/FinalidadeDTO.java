@@ -9,16 +9,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @Setter
 @Getter
-
 public class FinalidadeDTO {
 
 	private Long id;
 	private String descricao;
-
-	/*
-	 * public FinalidadeDTO(Finalidade finalidade) { id = finalidade.getId();
-	 * descricao = finalidade.getDescricao(); }
-	 */
 
 
 }

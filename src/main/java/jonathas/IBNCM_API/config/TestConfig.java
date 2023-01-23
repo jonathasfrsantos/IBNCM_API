@@ -12,6 +12,7 @@ import org.springframework.data.convert.Jsr310Converters.LocalDateTimeToDateConv
 
 import jonathas.IBNCM_API.entities.Finalidade;
 import jonathas.IBNCM_API.entities.Lancamento;
+import jonathas.IBNCM_API.entities.DTO.LancamentoDTO;
 import jonathas.IBNCM_API.entities.enums.BancoCaixa;
 import jonathas.IBNCM_API.repositories.FinalidadeRepository;
 import jonathas.IBNCM_API.repositories.LancamentoRepository;
@@ -43,20 +44,35 @@ public class TestConfig implements CommandLineRunner{
 		
 		finalidadeRepo.saveAll(Arrays.asList(f1, f2, f3, f4, f5, f6, f7));
 		
-		Lancamento l1 = new Lancamento(null, LocalDate.parse("02/10/2022", formatter), 100.00, null, "Laura", f1, BancoCaixa.CAIXA);
-		Lancamento l2 = new Lancamento(null, LocalDate.parse("02/10/2022", formatter), 260.00, null, "Maria", f1, BancoCaixa.CAIXA);
-		Lancamento l3 = new Lancamento(null, LocalDate.parse("01/10/2022", formatter), null, 35.69, "Mercado tal LTDA - lanche irmãos", f3, BancoCaixa.CAIXA);
-		Lancamento l4 = new Lancamento(null, LocalDate.parse("14/10/2022", formatter), null, 978.97, "Light S.A.", f4, BancoCaixa.ITAÚ);
-		Lancamento l5 = new Lancamento(null, LocalDate.parse("15/10/2022",formatter), 520.00, null, "Oferta fulano", f2, BancoCaixa.CAIXA);
-		Lancamento l6 = new Lancamento(null, LocalDate.parse("05/10/2022",formatter), 125.00, null, "Oferta beltrano", f2, BancoCaixa.ITAÚ);
-		Lancamento l7 = new Lancamento(null, LocalDate.parse("16/10/2022",formatter), null, 213.00, "Águas do rio SPE - set/2022", f5, BancoCaixa.ITAÚ);
-		Lancamento l8 = new Lancamento(null, LocalDate.parse("19/10/2022",formatter), null, 99.98, "VIVO INTERNET ", f6, BancoCaixa.ITAÚ);
-		Lancamento l9 = new Lancamento(null, LocalDate.parse("06/10/2022",formatter), null, 150.00, "Manutenção ar condicionado ", f7, BancoCaixa.CAIXA);
+//Lancamento l1 = new Lancamento(null, LocalDate.parse("02/10/2022", formatter), 100.00, null, "Laura rato", f1, BancoCaixa.CAIXA);
+		
+		
+		
+		/*
+		 * Lancamento l1 = new Lancamento(null, LocalDate.parse("02/10/2022",
+		 * formatter), 100.00, null, "Laura", f1, BancoCaixa.CAIXA); Lancamento l2 = new
+		 * Lancamento(null, LocalDate.parse("02/10/2022", formatter), 260.00, null,
+		 * "Maria", f1, BancoCaixa.CAIXA); Lancamento l3 = new Lancamento(null,
+		 * LocalDate.parse("01/10/2022", formatter), null, 35.69,
+		 * "Mercado tal LTDA - lanche irmãos", f3, BancoCaixa.CAIXA); Lancamento l4 =
+		 * new Lancamento(null, LocalDate.parse("14/10/2022", formatter), null, 978.97,
+		 * "Light S.A.", f4, BancoCaixa.ITAÚ); Lancamento l5 = new Lancamento(null,
+		 * LocalDate.parse("15/10/2022",formatter), 520.00, null, "Oferta fulano", f2,
+		 * BancoCaixa.CAIXA); Lancamento l6 = new Lancamento(null,
+		 * LocalDate.parse("05/10/2022",formatter), 125.00, null, "Oferta beltrano", f2,
+		 * BancoCaixa.ITAÚ); Lancamento l7 = new Lancamento(null,
+		 * LocalDate.parse("16/10/2022",formatter), null, 213.00,
+		 * "Águas do rio SPE - set/2022", f5, BancoCaixa.ITAÚ); Lancamento l8 = new
+		 * Lancamento(null, LocalDate.parse("19/10/2022",formatter), null, 99.98,
+		 * "VIVO INTERNET ", f6, BancoCaixa.ITAÚ); Lancamento l9 = new Lancamento(null,
+		 * LocalDate.parse("06/10/2022",formatter), null, 150.00,
+		 * "Manutenção ar condicionado ", f7, BancoCaixa.CAIXA);
+		 */
 		
 		
 		
 		
-		lancamentoRepo.saveAll(Arrays.asList(l1, l2, l3, l4, l5, l6, l7, l8, l9));
+		//lancamentoRepo.saveAll(Arrays.asList(l1, l2, l3, l4, l5, l6, l7, l8, l9));
 		
 		
 		

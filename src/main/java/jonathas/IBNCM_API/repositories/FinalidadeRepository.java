@@ -12,6 +12,12 @@ public interface FinalidadeRepository extends JpaRepository<Finalidade, Long> {
 	
 	List<Finalidade> findByDescricaoContains(String descricao);
 	
+	Finalidade findByDescricao(String descricao);
+
+	
+	
+	
+	
 	
 	
 	

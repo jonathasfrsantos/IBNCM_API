@@ -10,6 +10,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,11 +25,13 @@ import org.springframework.web.bind.annotation.RestController;
 import jonathas.IBNCM_API.entities.Finalidade;
 import jonathas.IBNCM_API.entities.Lancamento;
 import jonathas.IBNCM_API.entities.DTO.LancamentoDTO;
+import jonathas.IBNCM_API.repositories.FinalidadeRepository;
 import jonathas.IBNCM_API.repositories.LancamentoRepository;
 import jonathas.IBNCM_API.services.LancamentoService;
 
 @RestController
 @RequestMapping(value = "/lancamentos")
+@CrossOrigin(origins = "http://localhost:3000")
 public class LancamentoController {
 	
 	@Autowired
@@ -36,6 +39,9 @@ public class LancamentoController {
 	
 	@Autowired
 	private LancamentoRepository repository;
+	
+	@Autowired
+	private FinalidadeRepository finalidadeRepository;
 	
 	
 
@@ -47,12 +53,28 @@ public class LancamentoController {
 	}
 	
 	
+	/*
+	 * @GetMapping public ResponseEntity<Page<LancamentoDTO>> findAll(
+	 * 
+	 * @PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.ASC)
+	 * Pageable pageable){ return
+	 * ResponseEntity.ok().body(service.findAll(pageable));
+	 * 
+	 * }
+	 */
+	
 	@GetMapping
-	public ResponseEntity<Page<LancamentoDTO>> findAll(
-			@PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.ASC) Pageable pageable){
-		return ResponseEntity.ok().body(service.findAll(pageable));
+	public List<LancamentoDTO> findAll(){
+		return service.findAll();
 		
 	}
+	
+	@GetMapping(value = "/orderByData")
+	public List<LancamentoDTO> orderByDate(){
+		return service.orderByDate();
+	}
+	
+	
 	
 	@GetMapping("/allOrderByData")
 	public ResponseEntity<Page<LancamentoDTO>> findAll2(

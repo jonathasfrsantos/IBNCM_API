@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -36,6 +37,8 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
 	
 	@Query(value = "SELECT SUM(SAIDA) AS totalSaidas FROM tb_lancamento", nativeQuery = true)
 	double totalSaidas();
+	
+	List<Lancamento> findByOrderByData();
 
 
 }
