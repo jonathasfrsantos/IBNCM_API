@@ -45,14 +45,22 @@ public class LancamentoController {
 	
 	
 
+	/*
+	 * @PostMapping
+	 * 
+	 * @ResponseStatus(HttpStatus.CREATED) public ResponseEntity<Lancamento>
+	 * insert(@RequestBody @Validated Lancamento lancamento) { return
+	 * ResponseEntity.ok().body(service.insert(lancamento));
+	 * 
+	 * }
+	 */
+	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Lancamento> insert(@RequestBody @Validated Lancamento lancamento) {
-		return ResponseEntity.ok().body(service.insert(lancamento));
-
+	public ResponseEntity<Lancamento> create(@RequestBody @Validated LancamentoDTO dto) {
+		return ResponseEntity.ok().body(service.create(dto));
+	
 	}
-	
-	
 	/*
 	 * @GetMapping public ResponseEntity<Page<LancamentoDTO>> findAll(
 	 * 
@@ -64,24 +72,24 @@ public class LancamentoController {
 	 */
 	
 	@GetMapping
-	public List<LancamentoDTO> findAll(){
-		return service.findAll();
+	public ResponseEntity<List<LancamentoDTO>> findAll(){
+		return ResponseEntity.ok().body(service.findAll());
 		
 	}
 	
-	@GetMapping(value = "/orderByData")
-	public List<LancamentoDTO> orderByDate(){
-		return service.orderByDate();
-	}
 	
 	
 	
-	@GetMapping("/allOrderByData")
-	public ResponseEntity<Page<LancamentoDTO>> findAll2(
-			@PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.ASC) Pageable pageable){
-		return ResponseEntity.ok().body(service.findAll2(pageable));
-
-	}
+	/*
+	 * @GetMapping("/allOrderByData") public ResponseEntity<Page<LancamentoDTO>>
+	 * findAll2(
+	 * 
+	 * @PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.ASC)
+	 * Pageable pageable){ return
+	 * ResponseEntity.ok().body(service.findAll2(pageable));
+	 * 
+	 * }
+	 */
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<LancamentoDTO> findById(@PathVariable Long id){

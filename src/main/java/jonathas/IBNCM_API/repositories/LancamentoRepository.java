@@ -17,6 +17,9 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
 	@Query(value = "SELECT * FROM tb_lancamento l ORDER BY l.data", nativeQuery = true)
 	Page<Lancamento> findAllOrderByData(Pageable pageable);
 	
+	@Query(value = "SELECT * FROM tb_lancamento l ORDER BY l.data", nativeQuery = true)
+	List<Lancamento> findAllOrderedByData();
+	
 	@Query(value = "SELECT * FROM tb_lancamento WHERE ENTRADA IS NOT NULL", nativeQuery = true)
 	List<Lancamento> findAllEntrada();
 	

@@ -1,6 +1,5 @@
 package jonathas.IBNCM_API.services;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -17,7 +16,6 @@ import jakarta.transaction.Transactional;
 import jonathas.IBNCM_API.entities.Finalidade;
 import jonathas.IBNCM_API.entities.Lancamento;
 import jonathas.IBNCM_API.entities.DTO.LancamentoDTO;
-import jonathas.IBNCM_API.entities.enums.BancoCaixa;
 import jonathas.IBNCM_API.factory.DTOFactory;
 import jonathas.IBNCM_API.repositories.FinalidadeRepository;
 import jonathas.IBNCM_API.repositories.LancamentoRepository;
@@ -34,6 +32,22 @@ public class LancamentoService {
 	@Autowired
 	private FinalidadeRepository finalidadeRepository;
 	
+	@Transactional
+	public Lancamento create(LancamentoDTO dto) {
+		Finalidade finalidade = finalidadeRepository.findByDescricao(dto.getFinalidade());
+		
+		if(finalidade == null) {
+			finalidade = new Finalidade(null, dto.getFinalidade(), "0");
+			finalidadeRepository.save(finalidade);
+		}
+		
+		Lancamento lancamento = new Lancamento(dto.getId(), dto.getData(), dto.getEntrada(), dto.getSaida(), dto.getHistorico(), finalidade, dto.getBancoCaixa());
+		
+		repository.save(lancamento);
+		
+		return lancamento;
+	}
+	
 	
 	  @Transactional 
 	  public Lancamento insert(Lancamento lancamento) {
@@ -47,25 +61,23 @@ public class LancamentoService {
 	 * result.map((x) -> DTOFactory.createDTO(x)); return page; }
 	 */
 	  
-	public List<LancamentoDTO> orderByDate(){
-		List<Lancamento> result = repository.findAll();
-		List<LancamentoDTO> dto = result.stream().map((x) -> DTOFactory.createDTO(x)).collect(Collectors.toList());
-		return dto;
-	}
-	
 	public List<LancamentoDTO> findAll(){
-		List<Lancamento> result = repository.findAll();
+		List<Lancamento> result = repository.findAllOrderedByData();
 		List<LancamentoDTO> dto = result.stream().map((x) -> DTOFactory.createDTO(x)).collect(Collectors.toList());
 		return dto;
 	}
 	
-	public Page<LancamentoDTO> findAll2(Pageable pageable){
-		Page<Lancamento> result = repository.findAllOrderByData(pageable);
-		Page<LancamentoDTO> page = result.map((x) -> DTOFactory.createDTO(x));
-		return page;
-		
-	}
-	
+	/*
+	 * public List<LancamentoDTO> findAll(){ List<Lancamento> result =
+	 * repository.findAll(); List<LancamentoDTO> dto = result.stream().map((x) ->
+	 * DTOFactory.createDTO(x)).collect(Collectors.toList()); return dto; }
+	 * 
+	 * public Page<LancamentoDTO> findAll2(Pageable pageable){ Page<Lancamento>
+	 * result = repository.findAllOrderByData(pageable); Page<LancamentoDTO> page =
+	 * result.map((x) -> DTOFactory.createDTO(x)); return page;
+	 * 
+	 * }
+	 */
 
 	public List<LancamentoDTO> findAllJr(){
 		List<Lancamento> result = repository.findByOrderByData();
@@ -114,6 +126,7 @@ public class LancamentoService {
 	}
 
 	private void updateData(Lancamento entity, Lancamento obj) {
+		entity.setId(obj.getId());
 		entity.setData(obj.getData());
 		entity.setEntrada(obj.getEntrada());
 		entity.setSaida(obj.getSaida());

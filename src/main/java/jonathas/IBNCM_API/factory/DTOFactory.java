@@ -17,6 +17,7 @@ public class DTOFactory {
 
 	public static LancamentoDTO createDTO(Lancamento lancamento) {
 		LancamentoDTO dto = new LancamentoDTO();
+		dto.setId(lancamento.getId());
 		dto.setData(lancamento.getData());
 		dto.setEntrada(lancamento.getEntrada());
 		dto.setSaida(lancamento.getSaida());

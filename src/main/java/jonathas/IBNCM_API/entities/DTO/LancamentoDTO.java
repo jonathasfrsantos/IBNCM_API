@@ -2,13 +2,8 @@ package jonathas.IBNCM_API.entities.DTO;
 
 import java.time.LocalDate;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jonathas.IBNCM_API.entities.Finalidade;
-import jonathas.IBNCM_API.entities.enums.BancoCaixa;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
@@ -23,13 +18,13 @@ public class LancamentoDTO {
 	private Double saida;
 	private String historico;
 	private String finalidade;
-	private BancoCaixa bancoCaixa;
+	private String bancoCaixa;
 	
 	public LancamentoDTO() {
 		
 	}
 	
-	public LancamentoDTO(Long id, LocalDate data, Double entrada, Double saida, String historico, Finalidade finalidade, BancoCaixa bancoCaixa) {
+	public LancamentoDTO(Long id, LocalDate data, Double entrada, Double saida, String historico, Finalidade finalidade, String bancoCaixa) {
 		this.id = id;
 		this.data = data;
 		this.entrada = entrada;
@@ -37,7 +32,6 @@ public class LancamentoDTO {
 		this.historico = historico;
 		this.finalidade = finalidade.getDescricao();
 		this.bancoCaixa = bancoCaixa;
-			
 	}
 
 

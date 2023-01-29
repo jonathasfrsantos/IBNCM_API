@@ -13,7 +13,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jonathas.IBNCM_API.entities.enums.BancoCaixa;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -43,7 +42,8 @@ public class Lancamento implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "finalidade_id")
 	private Finalidade finalidade;
-	private BancoCaixa bancoCaixa;
+	@Column(name = "banco_caixa")
+	private String bancoCaixa;
 
 	
 	
