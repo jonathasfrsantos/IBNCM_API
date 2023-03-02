@@ -1,18 +1,25 @@
 package jonathas.IBNCM_API.repositories;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-import jonathas.IBNCM_API.entities.Finalidade;
 import jonathas.IBNCM_API.entities.Lancamento;
 
 public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
+	
+	
+	// SELECT SUM(ENTRADA) AS TOTALSUM FROM TB_LANCAMENTO WHERE DATA BETWEEN '2023-01-01' AND '2023-01-31';
+	
+	@Query(value = "SELECT *, B.descricao FROM tb_lancamento A INNER JOIN tb_finalidade B",  nativeQuery = true)
+	List<Lancamento> findAllTeste();
 	
 	@Query(value = "SELECT * FROM tb_lancamento l ORDER BY l.data", nativeQuery = true)
 	Page<Lancamento> findAllOrderByData(Pageable pageable);
@@ -41,6 +48,10 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
 	@Query(value = "SELECT SUM(SAIDA) AS totalSaidas FROM tb_lancamento", nativeQuery = true)
 	double totalSaidas();
 	
+	@Query(value = "SELECT SUM(ENTRADA) AS totaSum FROM tb_lancamento WHERE DATA BETWEEN :data_inicial AND :data_final", nativeQuery = true)
+	Double totalEntradasPerPeriodo(@Param("data_inicial") LocalDate data_inicial, @Param("data_final") LocalDate data_final);
+
+
 	List<Lancamento> findByOrderByData();
 
 

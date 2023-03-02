@@ -27,6 +27,9 @@ public class LancamentoService {
 
 	@Autowired
 	private LancamentoRepository repository;
+	
+	@Autowired
+	private FinalidadeService finalidadeService;
 
 	
 	@Autowired
@@ -48,18 +51,6 @@ public class LancamentoService {
 		return lancamento;
 	}
 	
-	
-	  @Transactional 
-	  public Lancamento insert(Lancamento lancamento) {
-		 return repository.save(lancamento);
-	  }
-	 
-
-	/*
-	 * public Page<LancamentoDTO> findAll(Pageable pageable) { Page<Lancamento>
-	 * result = repository.findAll(pageable); Page<LancamentoDTO> page =
-	 * result.map((x) -> DTOFactory.createDTO(x)); return page; }
-	 */
 	  
 	public List<LancamentoDTO> findAll(){
 		List<Lancamento> result = repository.findAllOrderedByData();
@@ -67,18 +58,7 @@ public class LancamentoService {
 		return dto;
 	}
 	
-	/*
-	 * public List<LancamentoDTO> findAll(){ List<Lancamento> result =
-	 * repository.findAll(); List<LancamentoDTO> dto = result.stream().map((x) ->
-	 * DTOFactory.createDTO(x)).collect(Collectors.toList()); return dto; }
-	 * 
-	 * public Page<LancamentoDTO> findAll2(Pageable pageable){ Page<Lancamento>
-	 * result = repository.findAllOrderByData(pageable); Page<LancamentoDTO> page =
-	 * result.map((x) -> DTOFactory.createDTO(x)); return page;
-	 * 
-	 * }
-	 */
-
+	
 	public List<LancamentoDTO> findAllJr(){
 		List<Lancamento> result = repository.findByOrderByData();
 		List<LancamentoDTO> dto = result.stream().map((x) -> DTOFactory.createDTO(x)).collect(Collectors.toList());
@@ -104,11 +84,15 @@ public class LancamentoService {
 		return dto;
 	}
 
-	public Lancamento update(Long id, Lancamento obj) {
+	public LancamentoDTO update(Long id, Lancamento obj) {
 		try {
-			Lancamento entity = repository.getReferenceById(id);
-			updateData(entity, obj);
-			return repository.save(entity);
+			Lancamento newObj= repository.getReferenceById(id);
+			Finalidade finalidade = finalidadeRepository.findByDescricao(obj.getFinalidade().getDescricao());
+			LancamentoDTO dto = DTOFactory.createDTO(obj);
+			updateData(obj, newObj);
+			newObj.setFinalidade(finalidade);
+			repository.save(newObj);
+			return dto;
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(id);
 		}
@@ -125,16 +109,35 @@ public class LancamentoService {
 		}
 	}
 
-	private void updateData(Lancamento entity, Lancamento obj) {
-		entity.setId(obj.getId());
-		entity.setData(obj.getData());
-		entity.setEntrada(obj.getEntrada());
-		entity.setSaida(obj.getSaida());
-		entity.setFinalidade(obj.getFinalidade());
-		entity.setHistorico(obj.getHistorico());
-		entity.setBancoCaixa(obj.getBancoCaixa());
-
+	private void updateData(Lancamento obj, Lancamento newObj) {
+		newObj.setId(obj.getId());
+		newObj.setData(obj.getData());
+		newObj.setEntrada(obj.getEntrada());
+		newObj.setSaida(obj.getSaida());
+		newObj.setFinalidade(obj.getFinalidade());
+		newObj.setHistorico(obj.getHistorico());
+		newObj.setBancoCaixa(obj.getBancoCaixa());
+	
 	}
+	
+	/*
+	 * public List<LancamentoDTO> findAll(){ List<Lancamento> result =
+	 * repository.findAll(); List<LancamentoDTO> dto = result.stream().map((x) ->
+	 * DTOFactory.createDTO(x)).collect(Collectors.toList()); return dto; }
+	 * 
+	 * public Page<LancamentoDTO> findAll2(Pageable pageable){ Page<Lancamento>
+	 * result = repository.findAllOrderByData(pageable); Page<LancamentoDTO> page =
+	 * result.map((x) -> DTOFactory.createDTO(x)); return page;
+	 * 
+	 * }
+	 */
+	
+	/*
+	 * public Page<LancamentoDTO> findAll(Pageable pageable) { Page<Lancamento>
+	 * result = repository.findAll(pageable); Page<LancamentoDTO> page =
+	 * result.map((x) -> DTOFactory.createDTO(x)); return page; }
+	 */
+
 	
 
 
