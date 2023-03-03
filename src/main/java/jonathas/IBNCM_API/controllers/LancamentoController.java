@@ -56,7 +56,7 @@ public class LancamentoController {
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Lancamento> create(@RequestBody @Validated LancamentoDTO dto) {
+	public ResponseEntity<LancamentoDTO> create(@RequestBody @Validated LancamentoDTO dto) {
 		return ResponseEntity.ok().body(service.create(dto));
 
 	}
@@ -157,10 +157,17 @@ public class LancamentoController {
 		return repository.findAllDizimos();
 	}
 
+	/*
+	 * @PutMapping(value = "/{id}") public ResponseEntity<LancamentoDTO>
+	 * update(@PathVariable Long id, @RequestBody Lancamento obj) { return
+	 * ResponseEntity.ok().body(service.update(id, obj));
+	 * 
+	 * }
+	 */
+	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<LancamentoDTO> update(@PathVariable Long id, @RequestBody Lancamento obj) {
-		return ResponseEntity.ok().body(service.update(id, obj));
-
+	public ResponseEntity<LancamentoDTO> update(@PathVariable Long id, @RequestBody LancamentoDTO dto){
+		return ResponseEntity.ok().body(service.update2(id, dto));
 	}
 
 	@DeleteMapping(value = "/{id}")

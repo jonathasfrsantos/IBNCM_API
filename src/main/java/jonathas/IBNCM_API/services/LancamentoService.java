@@ -2,6 +2,7 @@ package jonathas.IBNCM_API.services;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,19 +37,69 @@ public class LancamentoService {
 	private FinalidadeRepository finalidadeRepository;
 	
 	@Transactional
-	public Lancamento create(LancamentoDTO dto) {
+	public LancamentoDTO create(LancamentoDTO dto) {
 		Finalidade finalidade = finalidadeRepository.findByDescricao(dto.getFinalidade());
 		
 		if(finalidade == null) {
 			finalidade = new Finalidade(null, dto.getFinalidade(), "0");
 			finalidadeRepository.save(finalidade);
-		}
-		
+		}	
 		Lancamento lancamento = new Lancamento(dto.getId(), dto.getData(), dto.getEntrada(), dto.getSaida(), dto.getHistorico(), finalidade, dto.getBancoCaixa());
-		
 		repository.save(lancamento);
+		dto = DTOFactory.createDTO(lancamento);
 		
-		return lancamento;
+		return dto;
+	}
+	
+	
+	
+	@Transactional
+	public LancamentoDTO update2(Long id, LancamentoDTO dto) {
+		Optional<Lancamento> OldLancamento = repository.findById(id);
+
+		if (OldLancamento.isPresent()) {
+			Lancamento lancamento = OldLancamento.get();
+
+			Finalidade finalidade = finalidadeRepository.findByDescricao(dto.getFinalidade());
+			if (finalidade == null) {
+				finalidade = new Finalidade(null, dto.getFinalidade(), "0");
+				finalidadeRepository.save(finalidade);
+			}
+
+			lancamento.setData(dto.getData());
+			lancamento.setEntrada(dto.getEntrada());
+			lancamento.setSaida(dto.getSaida());
+			lancamento.setHistorico(dto.getHistorico());
+			lancamento.setFinalidade(finalidade);
+			lancamento.setBancoCaixa(dto.getBancoCaixa());
+
+			repository.save(lancamento);
+			dto = DTOFactory.createDTO(lancamento);
+			return dto;
+
+		} else {
+			throw new EntityNotFoundException("Lançamento não encontrado com o ID:" + id);
+		}
+
+	}
+	
+	
+	
+	
+	
+	public LancamentoDTO update(Long id, Lancamento obj) {
+		try {
+			Lancamento newObj= repository.getReferenceById(id);
+			Finalidade finalidade = finalidadeRepository.findByDescricao(obj.getFinalidade().getDescricao());
+			LancamentoDTO dto = DTOFactory.createDTO(obj);
+			updateData(obj, newObj);
+			newObj.setFinalidade(finalidade);
+			repository.save(newObj);
+			return dto;
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
+
 	}
 	
 	  
@@ -84,20 +135,7 @@ public class LancamentoService {
 		return dto;
 	}
 
-	public LancamentoDTO update(Long id, Lancamento obj) {
-		try {
-			Lancamento newObj= repository.getReferenceById(id);
-			Finalidade finalidade = finalidadeRepository.findByDescricao(obj.getFinalidade().getDescricao());
-			LancamentoDTO dto = DTOFactory.createDTO(obj);
-			updateData(obj, newObj);
-			newObj.setFinalidade(finalidade);
-			repository.save(newObj);
-			return dto;
-		} catch (EntityNotFoundException e) {
-			throw new ResourceNotFoundException(id);
-		}
-
-	}
+	
 
 	public void delete(Long id) {
 		try {
