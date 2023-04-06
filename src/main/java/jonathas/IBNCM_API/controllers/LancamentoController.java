@@ -76,17 +76,39 @@ public class LancamentoController {
 
 	}
 	
+
+
+
+	@GetMapping("/getTotalEntradasPerPeriod")
+	public Double getTotalEntradasPerPeriodo(@RequestParam("dataInicial") LocalDate dataInicial,
+			@RequestParam("dataFinal") LocalDate dataFinal) {
+		return repository.totalEntradasPerPeriodo(dataInicial, dataFinal);
+	}
+	
+	  @GetMapping("/periodo")
+	    public ResponseEntity<List<Lancamento>> getLancamentosByPeriodo(
+	        @RequestParam("dataInicial") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dataInicial,
+	        @RequestParam("dataFinal") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dataFinal) {
+	        
+	        List<Lancamento> lancamentos = repository.findAllDateSelected(dataInicial, dataFinal);
+	        
+	        return ResponseEntity.ok().body(lancamentos);
+	    }
+
+
+	
+	
+	@GetMapping("/currentMonth")
+	public ResponseEntity<List<Lancamento>> findAllCurrent(){
+		return ResponseEntity.ok().body(repository.findAllCurrentMonth());
+	}
+	
 	@GetMapping("/testeQueryNative")
 	public ResponseEntity<List<Lancamento>> findAllTeste(){
 		return ResponseEntity.ok().body(repository.findAllTeste());
 	}
 	
 	
-	@GetMapping("/getTotalEntradasPerPeriod")
-	public Double getTotalEntradasPerPeriodo(@RequestParam("dataInicial") LocalDate dataInicial,
-			@RequestParam("dataFinal") LocalDate dataFinal) {
-		return repository.totalEntradasPerPeriodo(dataInicial, dataFinal);
-	}
 
 	/*
 	 * @GetMapping("/getTotalEntradasPerPeriod") public Double

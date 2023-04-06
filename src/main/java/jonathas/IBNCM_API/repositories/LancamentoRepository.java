@@ -21,6 +21,15 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
 	@Query(value = "SELECT *, B.descricao FROM tb_lancamento A INNER JOIN tb_finalidade B",  nativeQuery = true)
 	List<Lancamento> findAllTeste();
 	
+	@Query(value = "SELECT * FROM tb_lancamento WHERE DATA BETWEEN :data_inicial AND :data_final", nativeQuery = true)
+	List<Lancamento> findAllDateSelected(@Param("data_inicial") LocalDate data_inicial, @Param("data_final") LocalDate data_final);
+	
+	@Query(value = "SELECT SUM(ENTRADA) AS totaSum FROM tb_lancamento WHERE DATA BETWEEN :data_inicial AND :data_final", nativeQuery = true)
+	Double totalEntradasPerPeriodo(@Param("data_inicial") LocalDate data_inicial, @Param("data_final") LocalDate data_final);
+	
+	@Query(value = "SELECT * FROM tb_lancamento WHERE date_part('month', data) = date_part('month', CURRENT_DATE) AND date_part('year', data) = date_part('year', CURRENT_DATE)", nativeQuery = true)
+	List<Lancamento> findAllCurrentMonth();
+	
 	@Query(value = "SELECT * FROM tb_lancamento l ORDER BY l.data", nativeQuery = true)
 	Page<Lancamento> findAllOrderByData(Pageable pageable);
 	
@@ -48,8 +57,7 @@ public interface LancamentoRepository extends JpaRepository<Lancamento, Long> {
 	@Query(value = "SELECT SUM(SAIDA) AS totalSaidas FROM tb_lancamento", nativeQuery = true)
 	double totalSaidas();
 	
-	@Query(value = "SELECT SUM(ENTRADA) AS totaSum FROM tb_lancamento WHERE DATA BETWEEN :data_inicial AND :data_final", nativeQuery = true)
-	Double totalEntradasPerPeriodo(@Param("data_inicial") LocalDate data_inicial, @Param("data_final") LocalDate data_final);
+	
 
 
 	List<Lancamento> findByOrderByData();
