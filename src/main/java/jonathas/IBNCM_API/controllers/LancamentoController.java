@@ -3,6 +3,8 @@ package jonathas.IBNCM_API.controllers;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jonathas.IBNCM_API.entities.Lancamento;
 import jonathas.IBNCM_API.entities.DTO.LancamentoDTO;
+import jonathas.IBNCM_API.factory.DTOFactory;
 import jonathas.IBNCM_API.repositories.FinalidadeRepository;
 import jonathas.IBNCM_API.repositories.LancamentoRepository;
 import jonathas.IBNCM_API.services.LancamentoService;
@@ -85,23 +88,28 @@ public class LancamentoController {
 		return repository.totalEntradasPerPeriodo(dataInicial, dataFinal);
 	}
 	
-	  @GetMapping("/periodo")
-	    public ResponseEntity<List<Lancamento>> getLancamentosByPeriodo(
-	        @RequestParam("dataInicial") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dataInicial,
-	        @RequestParam("dataFinal") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dataFinal) {
-	        
-	        List<Lancamento> lancamentos = repository.findAllDateSelected(dataInicial, dataFinal);
-	        
-	        return ResponseEntity.ok().body(lancamentos);
-	    }
-
-
-	
-	
-	@GetMapping("/currentMonth")
-	public ResponseEntity<List<Lancamento>> findAllCurrent(){
-		return ResponseEntity.ok().body(repository.findAllCurrentMonth());
+	@GetMapping("/getByDateInterval")
+	public ResponseEntity<List<LancamentoDTO>> getByDateInterval(
+	    @RequestParam("dataInicial") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dataInicial,
+	    @RequestParam("dataFinal") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate dataFinal) {
+    
+	    return ResponseEntity.ok().body(service.findByDateInterval(dataInicial, dataFinal));
 	}
+	
+	@GetMapping("/getByCurrentMonth")
+	public ResponseEntity<List<LancamentoDTO>> getByCurrentMonth(){
+		return ResponseEntity.ok().body(service.findByCurrentMonth());
+	
+	}
+
+
+
+	
+		/*
+		 * @GetMapping("/currentMonth") public ResponseEntity<List<Lancamento>>
+		 * findAllCurrentMonth(){ return
+		 * ResponseEntity.ok().body(repository.findAllCurrentMonth()); }
+		 */
 	
 	@GetMapping("/testeQueryNative")
 	public ResponseEntity<List<Lancamento>> findAllTeste(){

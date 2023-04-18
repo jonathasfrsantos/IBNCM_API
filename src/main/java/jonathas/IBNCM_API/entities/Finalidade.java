@@ -2,6 +2,8 @@ package jonathas.IBNCM_API.entities;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,7 +30,7 @@ public class Finalidade implements Serializable {
 	@EqualsAndHashCode.Include
 	private Long id;
 	private String descricao;
-	private String contaContabil;
+
 
 	}
 	

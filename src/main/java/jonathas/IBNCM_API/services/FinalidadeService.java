@@ -96,7 +96,7 @@ public class FinalidadeService implements ConverterDTO {
 
 	private void updateData(Finalidade newObj, Finalidade oldObj) {
 		newObj.setDescricao(oldObj.getDescricao());
-		newObj.setContaContabil(oldObj.getContaContabil());
+		
 	}
 
 	public boolean existsByDescricao(String descricao) {

@@ -3,10 +3,15 @@ package jonathas.IBNCM_API.entities;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import org.hibernate.FetchMode;
+import org.hibernate.annotations.Fetch;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -38,9 +43,10 @@ public class Lancamento implements Serializable{
 	private Double saida;
 	private String historico;
 	
-	@JsonIgnore
-	@ManyToOne
+
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "finalidade_id")
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "finalidade"})
 	private Finalidade finalidade;
 	@Column(name = "banco_caixa")
 	private String bancoCaixa;

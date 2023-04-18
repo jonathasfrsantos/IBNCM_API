@@ -1,10 +1,10 @@
 package jonathas.IBNCM_API.services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -28,31 +28,29 @@ public class LancamentoService {
 
 	@Autowired
 	private LancamentoRepository repository;
-	
+
 	@Autowired
 	private FinalidadeService finalidadeService;
 
-	
 	@Autowired
 	private FinalidadeRepository finalidadeRepository;
-	
+
 	@Transactional
 	public LancamentoDTO create(LancamentoDTO dto) {
 		Finalidade finalidade = finalidadeRepository.findByDescricao(dto.getFinalidade());
-		
-		if(finalidade == null) {
-			finalidade = new Finalidade(null, dto.getFinalidade(), "0");
+
+		if (finalidade == null) {
+			finalidade = new Finalidade(null, dto.getFinalidade());
 			finalidadeRepository.save(finalidade);
-		}	
-		Lancamento lancamento = new Lancamento(dto.getId(), dto.getData(), dto.getEntrada(), dto.getSaida(), dto.getHistorico(), finalidade, dto.getBancoCaixa());
+		}
+		Lancamento lancamento = new Lancamento(dto.getId(), dto.getData(), dto.getEntrada(), dto.getSaida(),
+				dto.getHistorico(), finalidade, dto.getBancoCaixa());
 		repository.save(lancamento);
 		dto = DTOFactory.createDTO(lancamento);
-		
+
 		return dto;
 	}
-	
-	
-	
+
 	@Transactional
 	public LancamentoDTO update2(Long id, LancamentoDTO dto) {
 		Optional<Lancamento> OldLancamento = repository.findById(id);
@@ -62,7 +60,7 @@ public class LancamentoService {
 
 			Finalidade finalidade = finalidadeRepository.findByDescricao(dto.getFinalidade());
 			if (finalidade == null) {
-				finalidade = new Finalidade(null, dto.getFinalidade(), "0");
+				finalidade = new Finalidade(null, dto.getFinalidade());
 				finalidadeRepository.save(finalidade);
 			}
 
@@ -82,14 +80,10 @@ public class LancamentoService {
 		}
 
 	}
-	
-	
-	
-	
-	
+
 	public LancamentoDTO update(Long id, Lancamento obj) {
 		try {
-			Lancamento newObj= repository.getReferenceById(id);
+			Lancamento newObj = repository.getReferenceById(id);
 			Finalidade finalidade = finalidadeRepository.findByDescricao(obj.getFinalidade().getDescricao());
 			LancamentoDTO dto = DTOFactory.createDTO(obj);
 			updateData(obj, newObj);
@@ -101,20 +95,18 @@ public class LancamentoService {
 		}
 
 	}
-	
-	  
-	public List<LancamentoDTO> findAll(){
+
+	public List<LancamentoDTO> findAll() {
 		List<Lancamento> result = repository.findAllOrderedByData();
 		List<LancamentoDTO> dto = result.stream().map((x) -> DTOFactory.createDTO(x)).collect(Collectors.toList());
 		return dto;
 	}
-	
-	
-	public List<LancamentoDTO> findAllJr(){
+
+	public List<LancamentoDTO> findAllJr() {
 		List<Lancamento> result = repository.findByOrderByData();
 		List<LancamentoDTO> dto = result.stream().map((x) -> DTOFactory.createDTO(x)).collect(Collectors.toList());
 		return dto;
-		
+
 	}
 
 	public LancamentoDTO findById(Long id) {
@@ -127,15 +119,30 @@ public class LancamentoService {
 		}
 	}
 
-
-
 	public List<LancamentoDTO> findByFinalityDescription(String descricao) {
 		List<Lancamento> result = repository.findByFinalidadeDescricao(descricao);
 		List<LancamentoDTO> dto = result.stream().map((x) -> DTOFactory.createDTO(x)).collect(Collectors.toList());
 		return dto;
 	}
 
+	public List<LancamentoDTO> findByDateInterval(LocalDate dataInicial, LocalDate dataFinal) {
+		
+		List<Lancamento> result = repository.findByDateInterval(dataInicial, dataFinal);
+
+		List<LancamentoDTO> lancamentoDTO = result.stream().map((x) -> DTOFactory.createDTO(x))
+				.collect(Collectors.toList());
+
+		return lancamentoDTO;
+
+	}
 	
+	public List<LancamentoDTO> findByCurrentMonth(){
+		List<Lancamento> result = repository.findByCurrentMonth();
+		
+		List<LancamentoDTO> lancamentoDTO = result.stream().map((x) -> DTOFactory.createDTO(x)).collect(Collectors.toList());
+		
+		return lancamentoDTO;
+	}
 
 	public void delete(Long id) {
 		try {
@@ -155,9 +162,9 @@ public class LancamentoService {
 		newObj.setFinalidade(obj.getFinalidade());
 		newObj.setHistorico(obj.getHistorico());
 		newObj.setBancoCaixa(obj.getBancoCaixa());
-	
+
 	}
-	
+
 	/*
 	 * public List<LancamentoDTO> findAll(){ List<Lancamento> result =
 	 * repository.findAll(); List<LancamentoDTO> dto = result.stream().map((x) ->
@@ -169,15 +176,11 @@ public class LancamentoService {
 	 * 
 	 * }
 	 */
-	
+
 	/*
 	 * public Page<LancamentoDTO> findAll(Pageable pageable) { Page<Lancamento>
 	 * result = repository.findAll(pageable); Page<LancamentoDTO> page =
 	 * result.map((x) -> DTOFactory.createDTO(x)); return page; }
 	 */
-
-	
-
-
 
 }
