@@ -39,13 +39,21 @@ public class FinalidadeController {
 		return ResponseEntity.ok().body(service.insert(finalidade));
 
 	}
-
+	
 	@GetMapping
-	public ResponseEntity<Page<FinalidadeDTO>> findAll(
-			@PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.ASC) Pageable pageable) {
-		return ResponseEntity.ok().body(service.findAll(pageable));
+	public ResponseEntity<List<FinalidadeDTO>> findAll(){
+		return ResponseEntity.ok().body(service.findAll());
 	}
+	
+	
 
+	/*
+	 * @GetMapping public ResponseEntity<Page<FinalidadeDTO>> findAll(
+	 * 
+	 * @PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.ASC)
+	 * Pageable pageable) { return
+	 * ResponseEntity.ok().body(service.findAll(pageable)); }
+	 */
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<FinalidadeDTO> findById(@PathVariable Long id) {
 		return ResponseEntity.ok().body(service.findById(id));

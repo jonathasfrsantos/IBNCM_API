@@ -53,10 +53,18 @@ public class FinalidadeService implements ConverterDTO {
 		}
 	}
 
-	public Page<FinalidadeDTO> findAll(Pageable pageable) {
-		Page<Finalidade> result = repository.findAll(pageable);
-		Page<FinalidadeDTO> page = result.map((x) -> DTOFactory.createDTO(x));
-		return page;
+	/*
+	 * public Page<FinalidadeDTO> findAll(Pageable pageable) { Page<Finalidade>
+	 * result = repository.findAll(pageable); Page<FinalidadeDTO> page =
+	 * result.map((x) -> DTOFactory.createDTO(x)); return page; }
+	 */
+	
+	public List<FinalidadeDTO> findAll(){
+		List<Finalidade> result = repository.findAll();
+		List<FinalidadeDTO> dto = result.stream().map((x) -> DTOFactory.createDTO(x)).collect(Collectors.toList());
+		return dto;
+		
+		
 	}
 	
 	public List<FinalidadeDTO> findAllByDescription(String description){
