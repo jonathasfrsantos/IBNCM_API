@@ -67,7 +67,13 @@ public class FinalidadeService implements ConverterDTO {
 		
 	}
 	
-	public List<FinalidadeDTO> findAllByDescription(String description){
+	public List<FinalidadeDTO> findAllByDescription(){
+		List<Finalidade> result = repository.findAllByDescription();
+		List<FinalidadeDTO> dto = result.stream().map((x) -> DTOFactory.createDTO(x)).collect(Collectors.toList());
+		return dto;
+	}
+	
+	public List<FinalidadeDTO> findByDescription(String description){
 		List<Finalidade> result = repository.findByDescricaoContains(description);
 		List<FinalidadeDTO> listDTO = result
 				.stream()

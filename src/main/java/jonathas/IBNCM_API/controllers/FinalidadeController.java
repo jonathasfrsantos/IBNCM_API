@@ -37,15 +37,17 @@ public class FinalidadeController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<Finalidade> insert(@RequestBody @Validated Finalidade finalidade) {
 		return ResponseEntity.ok().body(service.insert(finalidade));
-
 	}
-	
+
 	@GetMapping
-	public ResponseEntity<List<FinalidadeDTO>> findAll(){
+	public ResponseEntity<List<FinalidadeDTO>> findAll() {
 		return ResponseEntity.ok().body(service.findAll());
 	}
-	
-	
+
+	@GetMapping(value = "/allDescription")
+	public ResponseEntity<List<FinalidadeDTO>> findAllByDescription() {
+		return ResponseEntity.ok().body(service.findAllByDescription());
+	}
 
 	/*
 	 * @GetMapping public ResponseEntity<Page<FinalidadeDTO>> findAll(
@@ -59,12 +61,11 @@ public class FinalidadeController {
 		return ResponseEntity.ok().body(service.findById(id));
 
 	}
-	
+
 	@GetMapping("/filter")
-	public ResponseEntity<List<FinalidadeDTO>> findAllByDescription(@RequestParam("descricao") String descricao){
-		return ResponseEntity.ok().body(service.findAllByDescription(descricao));
+	public ResponseEntity<List<FinalidadeDTO>> findByDescription(@RequestParam("descricao") String descricao) {
+		return ResponseEntity.ok().body(service.findByDescription(descricao));
 	}
-	
 
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Finalidade> update(@PathVariable Long id, @RequestBody Finalidade obj) {
