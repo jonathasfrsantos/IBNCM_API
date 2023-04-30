@@ -165,22 +165,7 @@ public class LancamentoService {
 
 	}
 
-	/*
-	 * public List<LancamentoDTO> findAll(){ List<Lancamento> result =
-	 * repository.findAll(); List<LancamentoDTO> dto = result.stream().map((x) ->
-	 * DTOFactory.createDTO(x)).collect(Collectors.toList()); return dto; }
-	 * 
-	 * public Page<LancamentoDTO> findAll2(Pageable pageable){ Page<Lancamento>
-	 * result = repository.findAllOrderByData(pageable); Page<LancamentoDTO> page =
-	 * result.map((x) -> DTOFactory.createDTO(x)); return page;
-	 * 
-	 * }
-	 */
-
-	/*
-	 * public Page<LancamentoDTO> findAll(Pageable pageable) { Page<Lancamento>
-	 * result = repository.findAll(pageable); Page<LancamentoDTO> page =
-	 * result.map((x) -> DTOFactory.createDTO(x)); return page; }
-	 */
+	
+	
 
 }
